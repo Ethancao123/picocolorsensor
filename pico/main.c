@@ -21,7 +21,7 @@
 #define MAIN_CTRL_PROXIMITY_SENSOR_ENABLE 0x01
 
 #define PROXIMITY_SENSOR_125MA 0x37
-#define PROXIMITY_SENSOR_RATE_100MS 0x03 //25ms
+#define PROXIMITY_SENSOR_RATE_100MS 0x01 //25ms
 #define PROXIMITY_SENSOR_RES_11BIT 0x18
 
 #define PROXIMITY_SENSOR_PULSES 32
@@ -106,7 +106,7 @@ int main() {
     memset(values, 0, sizeof(values));
 
     while (1) {
-        loopTime = make_timeout_time_ms(100);
+        loopTime = make_timeout_time_ms(50);
 
         currentValid0 = read_i2c_data(i2c0, MAIN_STATUS_REGISTER, i2cBuffer, 15);
         if (currentValid0) {
