@@ -12,6 +12,7 @@
 #define PROXIMITY_SENSOR_LED_REGISTER 0x01
 #define PROXIMITY_SENSOR_RATE_REGISTER 0x03
 #define PROXIMITY_SENSOR_PULSES_REGISTER 0x02
+#define COLOR_SENSOR_RATE_REGISTER 0x04
 #define PART_ID_REGISTER 0x06
 #define MAIN_STATUS_REGISTER 0x07
 #define PROXIMITY_DATA_REGISTER 0x08
@@ -22,7 +23,8 @@
 
 #define PROXIMITY_SENSOR_125MA 0x37
 #define PROXIMITY_SENSOR_RATE_100MS 0x01 //25ms
-#define PROXIMITY_SENSOR_RES_11BIT 0x18
+#define PROXIMITY_SENSOR_RES_11BIT 0x00 //8 bit
+#define COLOR_SENSOR_RESOLUTION_RATE 0x50 //13 bit 25ms
 
 #define PROXIMITY_SENSOR_PULSES 32
 
@@ -53,6 +55,10 @@ void init_device(i2c_inst_t* i2c, uint8_t* i2cBuffer) {
 
     i2cBuffer[0] = PROXIMITY_SENSOR_LED_REGISTER;
     i2cBuffer[1] = PROXIMITY_SENSOR_125MA;
+    i2c_write_timeout_us(i2c, SENSOR_ADDRESS, i2cBuffer, 2, false, 25000);
+
+    i2cBuffer[0] = COLOR_SENSOR_RATE_REGISTER;
+    i2cBuffer[1] = COLOR_SENSOR_RESOLUTION_RATE;
     i2c_write_timeout_us(i2c, SENSOR_ADDRESS, i2cBuffer, 2, false, 25000);
 }
 
@@ -106,7 +112,7 @@ int main() {
     memset(values, 0, sizeof(values));
 
     while (1) {
-        loopTime = make_timeout_time_ms(50);
+        loopTime = make_timeout_time_ms(25);
 
         currentValid0 = read_i2c_data(i2c0, MAIN_STATUS_REGISTER, i2cBuffer, 15);
         if (currentValid0) {
