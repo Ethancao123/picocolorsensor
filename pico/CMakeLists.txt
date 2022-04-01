@@ -12,7 +12,7 @@ pico_sdk_init()
 add_executable(picocolorsensor main.c)
 
 # Add pico_stdlib library which aggregates commonly used features
-target_link_libraries(picocolorsensor pico_stdlib hardware_i2c hardware_uart)
+target_link_libraries(picocolorsensor pico_stdlib hardware_i2c hardware_uart hardware_pwm hardware_gpio)
 
 # create map/bin/hex/uf2 file in addition to ELF.
 pico_add_extra_outputs(picocolorsensor)
